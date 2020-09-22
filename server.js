@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 var mysql = require('mysql');
+const port = process.env.PORT || 3001;
 
 app.get('/', (req, res) => {
     res.send('Hello world from a Node.js app!')
@@ -59,6 +60,6 @@ client.query('SELECT NOW()', (err, res) => {
 
 
 
-app.listen(3000, () => {
-    console.log('Server is up on 3000')
+app.listen(port, () => {
+    console.log('Server is up on : '+ port)
 })
