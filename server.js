@@ -3,9 +3,9 @@ const app = express();
 var mysql = require('mysql');
 const port = process.env.PORT || 3001;
 
-app.get('/', (req, res) => {
-    res.send('Hello world from a Node.js app!')
-})
+var mysqlResponse = "";
+var postgresResponse = "";
+
 
 //Mysql connection testing
 var con = mysql.createConnection({
@@ -30,6 +30,7 @@ con.connect(function(err) {
   con.query(sqlInsert, function (err, result) {
     if (err) throw err;
     console.log("1 record inserted");
+    mysqlResponse = result;
   });
 });
 
@@ -55,7 +56,18 @@ client.connect()
 client.query('SELECT NOW()', (err, res) => {
   if(err) console.log("Postgres connection failed!");
   else console.log("Postgress connection successfull");
+  postgresResponse = res;
   client.end()
+})
+
+
+app.get('/', (req, res) => {
+  res.json({
+    "Server running :" : "On port:" + port,   
+    "Database" : "AWS rds",
+    "MySQL" : mysqlResponse,
+    "Postgres" : postgresResponse 
+  });
 })
 
 
