@@ -5,6 +5,17 @@ const port = process.env.PORT || 3001;
 
 var mysqlResponse = "";
 var postgresResponse = "";
+var mongoResponse = "";
+
+//mongo DB connection
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://54.169.120.205:27017/mydb";
+
+MongoClient.connect(url,{useUnifiedTopology: true, useNewUrlParser: true }, function(err, db) {
+  if (err) throw console.log(err);
+  mongoResponse = "Mongo Ec2 instance connected"
+  db.close();
+});
 
 
 //Mysql connection testing
@@ -66,7 +77,8 @@ app.get('/', (req, res) => {
     "Server running :" : "On port:" + port,   
     "Database" : "AWS rds",
     "MySQL" : mysqlResponse,
-    "Postgres" : postgresResponse 
+    "Postgres" : postgresResponse,
+    "MongoDb" : mongoResponse 
   });
 })
 
