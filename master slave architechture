@@ -1,0 +1,16 @@
+Documentation:
+https://medium.com/@priyankvaghela/mongodb-master-slave-replication-in-ubuntu-16-04-via-aws-ec2-d35d3635b082
+
+Mongodb installation in Ubuntu
+https://medium.com/faun/install-mongodb-on-aws-ubuntu-ec2-instance-6794cd8e3b4e
+
+to all instances
+sudo nano /etc/hostname
+
+Master Write ip-172-31-35-200 [sudo nano /etc/hostname]  master-db-write
+
+
+Slave Read ip-172-31-38-252 [sudo nano /etc/hostname]  slave-one-read
+
+
+Slave Backup ip-172-31-41-55 [sudo nano /etc/hostname] slave-two-backup

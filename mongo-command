@@ -1,4 +1,7 @@
-//creating admin user after ec2-mongo-db installation
+ec2 instance login
+ssh -i "MongoDB_Database_EC2_Instance.pem" ubuntu@ec2-54-169-120-205.ap-southeast-1.compute.amazonaws.com
+
+//creating admin user after ec2-mongo-db installation  [user creation only]
 mongo
 db.createUser( {	user: "admin", pwd: "password", roles:[{role: "userAdminAnyDatabase" , db:"admin"}]})
 mongo --port 27017 -u admin -p --authenticationDatabase "admin"
@@ -7,7 +10,7 @@ use admin
 
 
 
-//Different database connection
+//Different database connection insert|view|delete
 mongo --port 27017 -u admin -p --authenticationDatabase "AmazonEc2DevelopmentDb"
 //creating admin development database
 db.createUser( { user: "asad", pwd: "12345", roles:[{role: "userAdmin" , db:"AmazonEc2DevelopmentDb"}]})
@@ -16,6 +19,6 @@ db.createUser( { user: "asad", pwd: "12345", roles:[{role: "userAdmin" , db:"Ama
 db.createUser( { user: "dev1", pwd: "12345", roles:[{role: "readWrite" , db:"AmazonEc2DevelopmentDb"}]}) 
 db.createUser( { user: "dev2", pwd: "12345", roles:[{role: "readWrite" , db:"AmazonEc2DevelopmentDb"}]})
 
-//Marketing team
+//Marketing team  view only
 db.createUser( { user: "marketing1", pwd: "12345", roles:[{role: "read" , db:"AmazonEc2DevelopmentDb"}]})
 db.createUser( { user: "marketing2", pwd: "12345", roles:[{role: "read" , db:"AmazonEc2DevelopmentDb"}]})

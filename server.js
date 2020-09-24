@@ -23,7 +23,7 @@ var url = "mongodb://dev1:12345@54.169.120.205:27017/";
 MongoClient.connect(url,{useUnifiedTopology: true, useNewUrlParser: true }, function(err, db) {
   if (err) { console.log("Connection string invalid"); mongoResponse = "Connection string invalid"; return ;}
   var dbo = db.db("AmazonEc2DevelopmentDb");
-  var myobj = { name: "AmazonDB", address: "Highway Road London" };
+  var myobj = { name: "Google", address: "Sun-vallie,New york,America" };
   dbo.collection("customers").insertOne(myobj, function(err, res) {
     if (err){
      mongoResponse = {
