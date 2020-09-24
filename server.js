@@ -2,19 +2,43 @@ const express = require('express');
 const app = express();
 var mysql = require('mysql');
 const port = process.env.PORT || 3001;
+var MongoClient = require('mongodb').MongoClient;
 
 var mysqlResponse = "";
 var postgresResponse = "";
 var mongoResponse = "";
 
 //mongo DB connection
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://54.169.120.205:27017/mydb";
+// var url = "mongodb://54.169.120.205:27017/AmazonEc2DevelopmentDb";
 
+// MongoClient.connect(url,{useUnifiedTopology: true, useNewUrlParser: true }, function(err, db) {
+//   if (err) throw console.log(err);
+//   console.log("Mongo instance connected!")
+//   mongoResponse = "Mongo Ec2 instance connected"
+//   db.close();
+// });
+
+
+var url = "mongodb://dev1:12345@54.169.120.205:27017/";
 MongoClient.connect(url,{useUnifiedTopology: true, useNewUrlParser: true }, function(err, db) {
-  if (err) throw console.log(err);
-  mongoResponse = "Mongo Ec2 instance connected"
-  db.close();
+  if (err) { console.log("Connection string invalid"); mongoResponse = "Connection string invalid"; return ;}
+  var dbo = db.db("AmazonEc2DevelopmentDb");
+  var myobj = { name: "AmazonDB", address: "Highway Road London" };
+  dbo.collection("customers").insertOne(myobj, function(err, res) {
+    if (err){
+     mongoResponse = {
+       "connection" : "db connected",
+       "mongoResponse" : err
+     }
+     return;
+    }
+    console.log("New record added!")
+    mongoResponse = {
+      "connection" : "db connected",
+      "mongoResponse" : res
+    }
+    db.close();
+  });
 });
 
 
@@ -40,7 +64,7 @@ con.connect(function(err) {
   var sqlInsert = "INSERT INTO customers (name, address) VALUES ('Company Inc', 'Highway 37')";
   con.query(sqlInsert, function (err, result) {
     if (err) throw err;
-    console.log("1 record inserted");
+    console.log("One mysql row updated");
     mysqlResponse = result;
   });
 });
