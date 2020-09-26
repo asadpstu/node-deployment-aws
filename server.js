@@ -8,22 +8,13 @@ var mysqlResponse = "";
 var postgresResponse = "";
 var mongoResponse = "";
 
-//mongo DB connection
-// var url = "mongodb://54.169.120.205:27017/AmazonEc2DevelopmentDb";
+//mongo DB connection  record creation || Master || Primary db
 
-// MongoClient.connect(url,{useUnifiedTopology: true, useNewUrlParser: true }, function(err, db) {
-//   if (err) throw console.log(err);
-//   console.log("Mongo instance connected!")
-//   mongoResponse = "Mongo Ec2 instance connected"
-//   db.close();
-// });
-
-
-var url = "mongodb://dev1:12345@54.169.120.205:27017/";
+var url = "mongodb://root:password@52.77.211.189:27017/";
 MongoClient.connect(url,{useUnifiedTopology: true, useNewUrlParser: true }, function(err, db) {
-  if (err) { console.log("Connection string invalid"); mongoResponse = "Connection string invalid"; return ;}
+  if (err) { console.log("Connection string invalid",err); mongoResponse = "Connection string invalid"; return ;}
   var dbo = db.db("AmazonEc2DevelopmentDb");
-  var myobj = { name: "Google", address: "Sun-vallie,New york,America" };
+  var myobj = { value1: Math.random(), value2: Math.random() };
   dbo.collection("customers").insertOne(myobj, function(err, res) {
     if (err){
      mongoResponse = {
@@ -40,6 +31,10 @@ MongoClient.connect(url,{useUnifiedTopology: true, useNewUrlParser: true }, func
     db.close();
   });
 });
+
+
+
+
 
 
 //Mysql connection testing
@@ -84,6 +79,7 @@ pool.query('SELECT NOW()', (err, res) => {
   console.log(err, res)
   pool.end()
 })*/
+
 const client = new Client({
   connectionString: connectionString,
 })
@@ -96,14 +92,33 @@ client.query('SELECT NOW()', (err, res) => {
 })
 
 
-app.get('/', (req, res) => {
+app.get('/',(req, res) => {
   res.json({
     "Server running :" : "On port:" + port,   
     "Database" : "AWS rds",
     "MySQL" : mysqlResponse,
     "Postgres" : postgresResponse,
-    "MongoDb" : mongoResponse 
+    "MongoDb" : mongoResponse
   });
+})
+
+
+
+//Mongo db record pulling from secondary node || Slave || Secondary db
+app.get('/mongo/secondary',(req, res) => {
+  var url_slave = "mongodb://root:password@13.229.112.209:27017/?readPreference=secondaryPreferred";
+  MongoClient.connect(url_slave,{useUnifiedTopology: true, useNewUrlParser: true }, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("AmazonEc2DevelopmentDb");
+    //Find all documents in the customers collection:
+    dbo.collection("customers").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      res.json({
+        "result" : result
+      });
+      db.close();
+    });
+  }); 
 })
 
 

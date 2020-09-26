@@ -1,11 +1,36 @@
 Documentation:
-https://medium.com/@priyankvaghela/mongodb-master-slave-replication-in-ubuntu-16-04-via-aws-ec2-d35d3635b082
+https://www.thegeekstuff.com/2014/02/mongodb-replication/
 
 Mongodb installation in Ubuntu
-https://medium.com/faun/install-mongodb-on-aws-ubuntu-ec2-instance-6794cd8e3b4e
+https://linuxize.com/post/how-to-install-mongodb-on-ubuntu-20-04/
+https://docs.mongodb.com/manual/reference/method/db.dropUser/#db.dropUser
+https://stackoverflow.com/questions/20117104/mongodb-root-user
+https://gist.github.com/calvinh8/c99e198ce5df3d8b1f1e42c1b984d7a4
+
+https://gist.github.com/calvinh8/c99e198ce5df3d8b1f1e42c1b984d7a4
+
+    user: "mongoAdmin",
+    pwd: "changeMe",
+
+    mongo -u mongoAdmin -p --authenticationDatabase admin
 
 to all instances
 sudo nano /etc/hostname
+
+keyFile generation to all node for connection between nodes mandatory **********
+-----------------------------------------------------------
+ubuntu@ip-172-31-41-214:~$ sudo mkdir -p /opt/mongodb
+ubuntu@ip-172-31-41-214:~$ cd /opt/mongodb/
+ubuntu@ip-172-31-41-214:/opt/mongodb$ sudo touch keyFile
+ubuntu@ip-172-31-41-214:/opt/mongodb$ sudo vi keyFile
+ubuntu@ip-172-31-41-214:/opt/mongodb$ cd ..
+ubuntu@ip-172-31-41-214:/opt$ cd ..
+ubuntu@ip-172-31-41-214:/$ sudo chown mongodb:mongodb /opt/mongodb/keyFile
+ubuntu@ip-172-31-41-214:/$ sudo chmod 0600 /opt/mongodb/keyFile
+ubuntu@ip-172-31-41-214:/$ sudo nano /etc/mongod.conf 
+ubuntu@ip-172-31-41-214:/$ sudo service mongod restart
+
+
 
 Master Write ip-172-31-35-200 [sudo nano /etc/hostname]  master-db-write
 

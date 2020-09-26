@@ -22,3 +22,9 @@ db.createUser( { user: "dev2", pwd: "12345", roles:[{role: "readWrite" , db:"Ama
 //Marketing team  view only
 db.createUser( { user: "marketing1", pwd: "12345", roles:[{role: "read" , db:"AmazonEc2DevelopmentDb"}]})
 db.createUser( { user: "marketing2", pwd: "12345", roles:[{role: "read" , db:"AmazonEc2DevelopmentDb"}]})
+
+
+
+cfg = rs.config()
+cfg.members.pop()
+rs.reconfig(cfg, {force: true})
